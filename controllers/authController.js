@@ -24,7 +24,14 @@ export const registerUser = async (req, res) => {
         const hashed = await bcrypt.hash(password, 10);
         const user = await User.create({ email, password: hashed });
 
-        res.status(201).json({ msg: "User successfully registered." });
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "7d",
+        });
+
+        res.status(201).json({
+            msg: "User successfully registered.",
+            token,
+        });
     } catch (err) {
         console.error("Register error:", err);
         res.status(500).json({ msg: "Internal server error." });
