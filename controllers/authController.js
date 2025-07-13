@@ -18,13 +18,13 @@ export const registerUser = async (req, res) => {
 
         const hashed = await bcrypt.hash(password, 10);
 
-        const avatarUrl = req.file?.path; // اینجا لینک مستقیم Cloudinary
+        const avatarUrl = req.file?.path;
 
         const user = await User.create({
             email,
             password: hashed,
             username,
-            avatar: avatarUrl, // لینک Cloudinary ذخیره میشه
+            avatar: avatarUrl,
         });
 
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -70,7 +70,15 @@ export const loginUser = async (req, res) => {
             expiresIn: "7d",
         });
 
-        res.status(200).json({ token });
+        res.status(200).json({
+            token,
+            user: {
+                id: user._id,
+                email: user.email,
+                username: user.username,
+                avatar: user.avatar,
+            },
+        });
     } catch (err) {
         console.error("Login error:", err);
         res.status(500).json({ msg: "Internal server error." });
