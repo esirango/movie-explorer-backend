@@ -5,29 +5,26 @@ import jwt from "jsonwebtoken";
 // Register
 export const registerUser = async (req, res) => {
     const { email, password, username } = req.body;
-    const avatar = req.file?.path;
 
     if (!email || !password || !username) {
-        return res
-            .status(400)
-            .json({ msg: "Email, username and password are required." });
+        return res.status(400).json({ msg: "All fields are required." });
     }
 
     try {
         const existing = await User.findOne({ email });
-
         if (existing) {
-            return res
-                .status(409)
-                .json({ msg: "An account with this email already exists." });
+            return res.status(409).json({ msg: "Email already exists." });
         }
 
         const hashed = await bcrypt.hash(password, 10);
+
+        const avatarUrl = req.file?.path; // اینجا لینک مستقیم Cloudinary
+
         const user = await User.create({
             email,
             password: hashed,
             username,
-            avatar,
+            avatar: avatarUrl, // لینک Cloudinary ذخیره میشه
         });
 
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -37,11 +34,6 @@ export const registerUser = async (req, res) => {
         res.status(201).json({
             msg: "User successfully registered.",
             token,
-            user: {
-                id: user._id,
-                username: user.username,
-                avatar: user.avatar,
-            },
         });
     } catch (err) {
         console.error("Register error:", err);
