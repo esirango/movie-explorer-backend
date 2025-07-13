@@ -4,12 +4,13 @@ import jwt from "jsonwebtoken";
 
 // Register
 export const registerUser = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, username } = req.body;
+    const avatar = req.file?.path;
 
-    if (!email || !password) {
+    if (!email || !password || !username) {
         return res
             .status(400)
-            .json({ msg: "Email and password are required." });
+            .json({ msg: "Email, username and password are required." });
     }
 
     try {
@@ -22,7 +23,12 @@ export const registerUser = async (req, res) => {
         }
 
         const hashed = await bcrypt.hash(password, 10);
-        const user = await User.create({ email, password: hashed });
+        const user = await User.create({
+            email,
+            password: hashed,
+            username,
+            avatar,
+        });
 
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: "7d",
@@ -31,6 +37,11 @@ export const registerUser = async (req, res) => {
         res.status(201).json({
             msg: "User successfully registered.",
             token,
+            user: {
+                id: user._id,
+                username: user.username,
+                avatar: user.avatar,
+            },
         });
     } catch (err) {
         console.error("Register error:", err);

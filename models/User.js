@@ -1,16 +1,11 @@
 import mongoose from "mongoose";
 
-const favoriteSchema = new mongoose.Schema({
-    movieId: String,
-    title: String,
-    posterPath: String,
-});
-
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
+    username: { type: String, required: true },
     password: { type: String, required: true },
-    profileImage: { type: String },
-    favorites: [favoriteSchema],
+    avatar: { type: String },
 });
 
-export default mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+export default User;
