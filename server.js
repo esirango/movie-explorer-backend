@@ -14,6 +14,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/movies", authMiddleware, movieRoutes);
+app.use("/uploads", express.static("uploads"));
 
 mongoose
     .connect(process.env.MONGO_URI)
