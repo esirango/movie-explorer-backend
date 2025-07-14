@@ -17,6 +17,7 @@ export const registerUser = async (req, res) => {
         }
 
         const hashed = await bcrypt.hash(password, 10);
+        console.log("Uploaded file:", req.file);
 
         const avatarUrl = req.file?.path;
 
