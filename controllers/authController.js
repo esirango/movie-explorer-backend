@@ -37,8 +37,9 @@ export const registerUser = async (req, res) => {
             token,
         });
     } catch (err) {
-        console.error("Register error:", err);
-        res.status(500).json({ msg: "Internal server error." });
+        console.error("Register error:", err.message);
+        console.error(err.stack); // نمایش trace کامل
+        res.status(500).json({ msg: err.message || "Internal server error." });
     }
 };
 
