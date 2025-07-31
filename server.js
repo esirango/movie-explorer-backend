@@ -2,8 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+
 import authRoutes from "./routes/auth.js";
 import movieRoutes from "./routes/movies.js";
+import userRoutes from "./routes/user.js";
 import { authMiddleware } from "./middlewares/auth.js";
 
 dotenv.config();
@@ -15,6 +17,7 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/movies", authMiddleware, movieRoutes);
 
 mongoose
