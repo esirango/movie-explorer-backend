@@ -1,7 +1,5 @@
 import User from "../models/User.js";
-
 import bcrypt from "bcryptjs";
-import User from "../models/User.js";
 
 export const updateAvatar = async (req, res) => {
     try {
@@ -86,6 +84,7 @@ export const updatePassword = async (req, res) => {
         }
 
         res.json({ msg: "Password updated successfully" });
+        س;
     } catch (err) {
         console.error("updatePassword error:", err);
         res.status(500).json({ msg: "Internal server error" });

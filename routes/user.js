@@ -1,6 +1,10 @@
 import express from "express";
 import upload from "../middlewares/cloudinaryUpload.js";
-import { updateAvatar } from "../controllers/userController.js";
+import {
+    updateAvatar,
+    updatePassword,
+    updateUsername,
+} from "../controllers/userController.js";
 import { authMiddleware } from "../middlewares/auth.js";
 
 const router = express.Router();
