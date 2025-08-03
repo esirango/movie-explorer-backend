@@ -41,9 +41,15 @@ export const updateUsername = async (req, res) => {
             return res.status(400).json({ msg: "Username is required" });
         }
 
+        if (username.trim().length < 3) {
+            return res
+                .status(400)
+                .json({ msg: "Username must be at least 3 characters long" });
+        }
+
         const user = await User.findByIdAndUpdate(
             userId,
-            { username },
+            { username: username.trim() },
             { new: true }
         );
 
@@ -67,6 +73,12 @@ export const updatePassword = async (req, res) => {
             return res.status(400).json({ msg: "Both fields are required" });
         }
 
+        if (newPassword.length < 6) {
+            return res
+                .status(400)
+                .json({ msg: "Password must be at least 6 characters long" });
+        }
+
         if (newPassword !== confirmPassword) {
             return res.status(400).json({ msg: "Passwords do not match" });
         }
@@ -84,7 +96,6 @@ export const updatePassword = async (req, res) => {
         }
 
         res.json({ msg: "Password updated successfully" });
-        س;
     } catch (err) {
         console.error("updatePassword error:", err);
         res.status(500).json({ msg: "Internal server error" });
