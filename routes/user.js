@@ -7,4 +7,8 @@ const router = express.Router();
 
 router.patch("/avatar", authMiddleware, upload.single("avatar"), updateAvatar);
 
+router.patch("/username", authMiddleware, updateUsername);
+
+router.patch("/password", authMiddleware, updatePassword);
+
 export default router;

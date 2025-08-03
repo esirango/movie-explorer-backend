@@ -14,7 +14,7 @@ export const authMiddleware = (req, res, next) => {
         req.userId = decoded.userId;
         next();
     } catch (err) {
-        console.error("JWT error:", err.message); // لاگ خطا برای دیباگ
+        console.error("JWT error:", err.message);
         return res.status(401).json({ msg: "Token invalid or expired" });
     }
 };
