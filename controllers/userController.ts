@@ -1,11 +1,21 @@
+import { Request, Response } from "express";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
-export const updateAvatar = async (req, res) => {
+interface AuthRequest extends Request {
+    userId?: string;
+    file?: Express.Multer.File;
+}
+
+export const updateAvatar = async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.userId;
 
-        let avatarUrl;
+        if (!userId) {
+            return res.status(401).json({ msg: "Unauthorized" });
+        }
+
+        let avatarUrl: string | undefined;
 
         if (req.file) {
             avatarUrl = req.file.path;
@@ -26,15 +36,20 @@ export const updateAvatar = async (req, res) => {
         }
 
         res.json({ avatar: user.avatar });
-    } catch (err) {
+    } catch (err: any) {
         console.error("updateAvatar error:", err);
         res.status(500).json({ msg: "Internal server error" });
     }
 };
 
-export const updateUsername = async (req, res) => {
+export const updateUsername = async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.userId;
+
+        if (!userId) {
+            return res.status(401).json({ msg: "Unauthorized" });
+        }
+
         const { username } = req.body;
 
         if (!username || username.trim() === "") {
@@ -58,15 +73,20 @@ export const updateUsername = async (req, res) => {
         }
 
         res.json({ username: user.username });
-    } catch (err) {
+    } catch (err: any) {
         console.error("updateUsername error:", err);
         res.status(500).json({ msg: "Internal server error" });
     }
 };
 
-export const updatePassword = async (req, res) => {
+export const updatePassword = async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.userId;
+
+        if (!userId) {
+            return res.status(401).json({ msg: "Unauthorized" });
+        }
+
         const { newPassword, confirmPassword } = req.body;
 
         if (!newPassword || !confirmPassword) {
@@ -96,7 +116,7 @@ export const updatePassword = async (req, res) => {
         }
 
         res.json({ msg: "Password updated successfully" });
-    } catch (err) {
+    } catch (err: any) {
         console.error("updatePassword error:", err);
         res.status(500).json({ msg: "Internal server error" });
     }

@@ -1,9 +1,14 @@
+import { Request, Response } from "express";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+interface AuthRequest extends Request {
+    userId?: string;
+}
+
 // Register
-export const registerUser = async (req, res) => {
+export const registerUser = async (req: Request, res: Response) => {
     const { email, password, username } = req.body;
 
     if (!email || !password || !username) {
@@ -28,7 +33,14 @@ export const registerUser = async (req, res) => {
             avatar: avatarUrl,
         });
 
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            return res
+                .status(500)
+                .json({ msg: "JWT secret is not configured." });
+        }
+
+        const token = jwt.sign({ userId: user._id }, jwtSecret, {
             expiresIn: "7d",
         });
 
@@ -36,15 +48,15 @@ export const registerUser = async (req, res) => {
             msg: "User successfully registered.",
             token,
         });
-    } catch (err) {
+    } catch (err: any) {
         console.error("Register error:", err.message);
-        console.error(err.stack); // نمایش trace کامل
+        console.error(err.stack);
         res.status(500).json({ msg: err.message || "Internal server error." });
     }
 };
 
 // Login
-export const loginUser = async (req, res) => {
+export const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -68,7 +80,14 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ msg: "Incorrect password." });
         }
 
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            return res
+                .status(500)
+                .json({ msg: "JWT secret is not configured." });
+        }
+
+        const token = jwt.sign({ userId: user._id }, jwtSecret, {
             expiresIn: "7d",
         });
 
@@ -87,7 +106,11 @@ export const loginUser = async (req, res) => {
     }
 };
 
-export const getCurrentUser = async (req, res) => {
+export const getCurrentUser = async (req: AuthRequest, res: Response) => {
+    if (!req.userId) {
+        return res.status(401).json({ msg: "Unauthorized" });
+    }
+
     const user = await User.findById(req.userId).select("-password");
     res.json(user);
 };

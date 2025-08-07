@@ -23,8 +23,13 @@ app.use("/api/user", userRoutes);
 app.use("/api/movies", authMiddleware, movieRoutes);
 app.use("/api/favorites", authMiddleware, favoriteRoutes);
 
+const mongoUri = process.env.MONGO_URI;
+if (!mongoUri) {
+    throw new Error("MONGO_URI environment variable is not defined!");
+}
+
 mongoose
-    .connect(process.env.MONGO_URI)
+    .connect(mongoUri)
     .then(() =>
         app.listen(process.env.PORT || 4000, () =>
             console.log("✅ Server running")
