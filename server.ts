@@ -15,11 +15,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/favorites", authMiddleware, favoriteRoutes);
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/favorites", authMiddleware, favoriteRoutes);
 
 const mongoUri = process.env.MONGO_URI;
 if (!mongoUri) {
