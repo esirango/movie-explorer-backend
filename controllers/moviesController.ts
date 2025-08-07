@@ -2,16 +2,13 @@ import { Request, Response } from "express";
 import User from "../models/User";
 
 interface AuthRequest extends Request {
-    user?: {
-        userId: string;
-    };
     userId?: string;
 }
 
 export const addFavorite = async (req: AuthRequest, res: Response) => {
     try {
         const { movieId, title, poster_path, vote_average } = req.body;
-        const userId = req.user?.userId;
+        const userId = req?.userId;
 
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
