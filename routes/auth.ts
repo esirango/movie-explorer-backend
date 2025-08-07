@@ -1,13 +1,13 @@
 import express from "express";
-import upload from "../middlewares/cloudinaryUpload.js";
+import upload from "../middlewares/cloudinaryUpload";
 
 import {
     registerUser,
     loginUser,
     getCurrentUser,
-} from "../controllers/authController.js";
-import { authMiddleware } from "../middlewares/auth.js";
-import { updateAvatar } from "../controllers/userController.js";
+} from "../controllers/authController";
+import { authMiddleware } from "../middlewares/auth";
+import { updateAvatar } from "../controllers/userController";
 
 const router = express.Router();
 

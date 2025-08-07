@@ -3,7 +3,7 @@ import {
     addFavorite,
     removeFavorite,
     listFavorites,
-} from "../controllers/moviesController.js";
+} from "../controllers/moviesController";
 
 const router = express.Router();
 

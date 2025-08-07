@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import authRoutes from "./routes/auth.js";
-import movieRoutes from "./routes/favorites.js";
-import userRoutes from "./routes/user.js";
-import favoriteRoutes from "./routes/favorites.js";
+import authRoutes from "./routes/auth";
+import movieRoutes from "./routes/favorites";
+import userRoutes from "./routes/user";
+import favoriteRoutes from "./routes/favorites";
 
-import { authMiddleware } from "./middlewares/auth.js";
+import { authMiddleware } from "./middlewares/auth";
 
 dotenv.config();
 const app = express();
