@@ -4,8 +4,10 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import authRoutes from "./routes/auth.js";
-import movieRoutes from "./routes/movies.js";
+import movieRoutes from "./routes/favorites.js";
 import userRoutes from "./routes/user.js";
+import favoriteRoutes from "./routes/favorites.js";
+
 import { authMiddleware } from "./middlewares/auth.js";
 
 dotenv.config();
@@ -19,6 +21,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/movies", authMiddleware, movieRoutes);
+app.use("/api/favorites", authMiddleware, favoriteRoutes);
 
 mongoose
     .connect(process.env.MONGO_URI)

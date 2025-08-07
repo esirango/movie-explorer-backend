@@ -7,8 +7,8 @@ import {
 
 const router = express.Router();
 
-router.get("/api/favorites", listFavorites);
-router.post("/api/favorites", addFavorite);
-router.delete("/api/favorites/:movieId", removeFavorite);
+router.get("/list", listFavorites);
+router.post("/add", addFavorite);
+router.delete("/remove/:movieId", removeFavorite);
 
 export default router;
