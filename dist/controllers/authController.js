@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCurrentUser = exports.loginUser = exports.registerUser = void 0;
-const User_js_1 = __importDefault(require("../models/User.js"));
+const User_1 = __importDefault(require("../models/User"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 // Register
@@ -14,14 +14,14 @@ const registerUser = async (req, res) => {
         return res.status(400).json({ msg: "All fields are required." });
     }
     try {
-        const existing = await User_js_1.default.findOne({ email });
+        const existing = await User_1.default.findOne({ email });
         if (existing) {
             return res.status(409).json({ msg: "Email already exists." });
         }
         const hashed = await bcryptjs_1.default.hash(password, 10);
         console.log("Uploaded file:", req.file);
         const avatarUrl = req.file?.path;
-        const user = await User_js_1.default.create({
+        const user = await User_1.default.create({
             email,
             password: hashed,
             username,
@@ -57,7 +57,7 @@ const loginUser = async (req, res) => {
             .json({ msg: "Email and password are required." });
     }
     try {
-        const user = await User_js_1.default.findOne({ email });
+        const user = await User_1.default.findOne({ email });
         if (!user) {
             return res
                 .status(404)
@@ -96,7 +96,7 @@ const getCurrentUser = async (req, res) => {
     if (!req.userId) {
         return res.status(401).json({ msg: "Unauthorized" });
     }
-    const user = await User_js_1.default.findById(req.userId).select("-password");
+    const user = await User_1.default.findById(req.userId).select("-password");
     res.json(user);
 };
 exports.getCurrentUser = getCurrentUser;

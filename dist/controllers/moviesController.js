@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.listFavorites = exports.removeFavorite = exports.addFavorite = void 0;
-const User_js_1 = __importDefault(require("../models/User.js"));
+const User_1 = __importDefault(require("../models/User"));
 const addFavorite = async (req, res) => {
     try {
         const { movieId, title, poster_path, vote_average } = req.body;
@@ -17,7 +17,7 @@ const addFavorite = async (req, res) => {
                 .status(400)
                 .json({ message: "All movie fields are required." });
         }
-        const user = await User_js_1.default.findById(userId);
+        const user = await User_1.default.findById(userId);
         if (!user)
             return res.status(404).json({ message: "User not found" });
         const alreadyExists = user.favorites.some((fav) => fav.movieId === movieId);
@@ -45,7 +45,7 @@ const removeFavorite = async (req, res) => {
     if (!userId) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    const user = await User_js_1.default.findById(userId);
+    const user = await User_1.default.findById(userId);
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }
@@ -59,7 +59,7 @@ const listFavorites = async (req, res) => {
     if (!userId) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    const user = await User_js_1.default.findById(userId);
+    const user = await User_1.default.findById(userId);
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }

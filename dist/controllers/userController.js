@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updatePassword = exports.updateUsername = exports.updateAvatar = void 0;
-const User_js_1 = __importDefault(require("../models/User.js"));
+const User_1 = __importDefault(require("../models/User"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const updateAvatar = async (req, res) => {
     try {
@@ -22,7 +22,7 @@ const updateAvatar = async (req, res) => {
         else {
             return res.status(400).json({ msg: "No avatar provided" });
         }
-        const user = await User_js_1.default.findByIdAndUpdate(userId, { avatar: avatarUrl }, { new: true });
+        const user = await User_1.default.findByIdAndUpdate(userId, { avatar: avatarUrl }, { new: true });
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }
@@ -49,7 +49,7 @@ const updateUsername = async (req, res) => {
                 .status(400)
                 .json({ msg: "Username must be at least 3 characters long" });
         }
-        const user = await User_js_1.default.findByIdAndUpdate(userId, { username: username.trim() }, { new: true });
+        const user = await User_1.default.findByIdAndUpdate(userId, { username: username.trim() }, { new: true });
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }
@@ -80,7 +80,7 @@ const updatePassword = async (req, res) => {
             return res.status(400).json({ msg: "Passwords do not match" });
         }
         const hashedPassword = await bcryptjs_1.default.hash(newPassword, 10);
-        const user = await User_js_1.default.findByIdAndUpdate(userId, { password: hashedPassword }, { new: true });
+        const user = await User_1.default.findByIdAndUpdate(userId, { password: hashedPassword }, { new: true });
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }
