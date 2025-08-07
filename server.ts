@@ -15,7 +15,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/favorites", authMiddleware, favoriteRoutes);
+app.use(
+    "/api/favorites",
+    (req, res, next) => {
+        console.log("Middleware is running!");
+        next();
+    },
+    favoriteRoutes
+);
+
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api/auth", authRoutes);
