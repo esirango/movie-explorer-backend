@@ -8,7 +8,7 @@ interface AuthRequest extends Request {
 export const addFavorite = async (req: AuthRequest, res: Response) => {
     try {
         const { movieId, title, poster_path, vote_average } = req.body;
-        const userId = req?.userId;
+        const userId = req.userId;
 
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
