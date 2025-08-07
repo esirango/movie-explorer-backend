@@ -5,8 +5,12 @@ interface JwtPayload {
     userId: string;
 }
 
+export interface AuthRequest extends Request {
+    userId?: string;
+}
+
 export const authMiddleware = (
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction
 ) => {
@@ -19,11 +23,14 @@ export const authMiddleware = (
 
     const token = authHeader.split(" ")[1];
 
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        console.error("JWT_SECRET is not defined!");
+        return res.status(500).json({ msg: "Internal Server Error" });
+    }
+
     try {
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET || ""
-        ) as JwtPayload;
+        const decoded = jwt.verify(token, secret) as JwtPayload;
         console.log("Decoded token:", decoded);
         req.userId = decoded.userId;
         next();

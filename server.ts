@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import authRoutes from "./routes/auth";
-import movieRoutes from "./routes/favorites";
 import userRoutes from "./routes/user";
 import favoriteRoutes from "./routes/favorites";
 
@@ -20,7 +19,6 @@ app.use("/uploads", express.static("uploads"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/movies", authMiddleware, movieRoutes);
 app.use("/api/favorites", authMiddleware, favoriteRoutes);
 
 const mongoUri = process.env.MONGO_URI;
