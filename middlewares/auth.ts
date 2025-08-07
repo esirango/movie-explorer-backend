@@ -11,6 +11,7 @@ export const authMiddleware = (
     next: NextFunction
 ) => {
     const authHeader = req.headers.authorization;
+    console.log("Auth header:", authHeader);
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({ msg: "No token provided" });
@@ -23,6 +24,7 @@ export const authMiddleware = (
             token,
             process.env.JWT_SECRET || ""
         ) as JwtPayload;
+        console.log("Decoded token:", decoded);
         req.userId = decoded.userId;
         next();
     } catch (err: any) {
