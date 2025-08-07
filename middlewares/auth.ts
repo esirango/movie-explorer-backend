@@ -14,10 +14,12 @@ export const authMiddleware = (
     res: Response,
     next: NextFunction
 ) => {
+    console.log("Auth middleware reached");
     const authHeader = req.headers.authorization;
     console.log("Auth header:", authHeader);
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        console.log("No token or malformed token");
         return res.status(401).json({ msg: "No token provided" });
     }
 
@@ -25,7 +27,7 @@ export const authMiddleware = (
 
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-        console.error("JWT_SECRET is not defined!");
+        console.error("JWT_SECRET not set");
         return res.status(500).json({ msg: "Internal Server Error" });
     }
 
@@ -35,7 +37,7 @@ export const authMiddleware = (
         req.userId = decoded.userId;
         next();
     } catch (err: any) {
-        console.error("JWT error:", err.message);
+        console.error("JWT error:", err.name, err.message);
         return res.status(401).json({ msg: "Token invalid or expired" });
     }
 };
