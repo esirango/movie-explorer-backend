@@ -7,7 +7,7 @@ import authRoutes from "./routes/auth";
 import userRoutes from "./routes/user";
 import favoriteRoutes from "./routes/favorites";
 
-import { authMiddleware, AuthRequest } from "./middlewares/auth";
+import { authMiddleware } from "./middlewares/auth";
 
 dotenv.config();
 const app = express();
@@ -15,15 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(
-    "/api/favorites",
-    (req, res, next) => {
-        console.log("userId in middleware:", (req as AuthRequest).userId);
-        next();
-    },
-    favoriteRoutes
-);
-
+app.use("/api/favorites", authMiddleware, favoriteRoutes);
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api/auth", authRoutes);
