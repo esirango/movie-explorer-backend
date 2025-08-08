@@ -11,9 +11,9 @@ export const addFavorite = async (req: AuthRequest, res: Response) => {
 
     console.log("userID:🆘", req.userId);
 
-    if (!userId) {
-        return res.status(401).json({ message: "Unauthorized" });
-    }
+    // if (!userId) {
+    //     return res.status(401).json({ message: "Unauthorized" });
+    // }
 
     if (!movieId || !title || !poster_path || !vote_average) {
         return res
