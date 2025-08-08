@@ -12,7 +12,7 @@ import { authMiddleware } from "./middlewares/auth";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors({ allowedHeaders: ["Content-Type", "Authorization"] }));
 app.use(express.json());
 
 app.use("/api/favorites", authMiddleware, favoriteRoutes);
